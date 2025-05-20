@@ -64,6 +64,29 @@ docker run -it --rm --pull=always \
     docker.all-hands.dev/all-hands-ai/openhands:0.38
 ```
 
+Alternatively, you can use Docker Compose with the following configuration:
+
+```yaml
+version: '3.8'
+services:
+  openhands-app:
+    image: docker.all-hands.dev/all-hands-ai/openhands:0.38
+    container_name: openhands-app
+    tty: true
+    stdin_open: true
+    pull_policy: always
+    environment:
+      - SANDBOX_RUNTIME_CONTAINER_IMAGE=docker.all-hands.dev/all-hands-ai/runtime:0.38-nikolaik
+      - LOG_ALL_EVENTS=true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/.openhands-state:/.openhands-state
+    ports:
+      - "3000:3000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+```
+
 You'll find OpenHands running at [http://localhost:3000](http://localhost:3000)!
 
 When you open the application, you'll be asked to choose an LLM provider and add an API key.
